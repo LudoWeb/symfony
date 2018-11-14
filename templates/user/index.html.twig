@@ -40,7 +40,7 @@
 
 {% block javascripts %}
     <script>
-        $('#monBouton').click(function() {
+        var refresh = function() {
             $.ajax({
                 url: "{{ path('ajax') }}",
             }).done(function( data ) {
@@ -59,6 +59,9 @@
                     $('tbody').append(line);
                 }
             });
-        });
+        }
+
+        setInterval(function(){ refresh(); }, 10000);
+
     </script>
 {% endblock %}
