@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+
+{{ form_start(form) }}
+{{ form_row(form.email, {name: '_username'}) }}
+{{ form_end(form) }}
+
+{% endblock %}

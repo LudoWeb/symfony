@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>FirstName</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>
+                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button id="monBouton">Update users</button>
+
+    <a href="{{ path('user_new') }}">Create new</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#monBouton').click(function() {
+            $.ajax({
+                url: "{{ path('ajax') }}",
+            }).done(function( data ) {
+                var users = JSON.parse(data.users);
+                
+                $('tbody').empty();
+                for (var key in users) {
+                    var line = '<tr>';
+                    line += '<td>' + users[key].id + '</td>';
+                    line += '<td>' + users[key].name + '</td>';
+                    line += '<td>' + users[key].firstName + '</td>';
+                    line += '<td><a href="{{ path('user_show', {id: '+users[key].id+'})|escape('js') }}">show</a>';
+                    line += '<a href="/user/' + users[key].id + '/edit">edit</a></td>';
+                    line += '</tr>';
+
+                    $('tbody').append(line);
+                }
+            });
+        });
+    </script>
+{% endblock %}
